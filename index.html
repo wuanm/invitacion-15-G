@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>XV Años · Bajo el Mar</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Allura&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Cormorant+Upright:wght@300;400;500;600&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+</head>
+
+
+<body>
+<!-- Cursor -->
+<!--  <div id="cursor"></div> -->
+<div id="cursor-ring"></div> 
+
+<!-- Background canvas -->
+<canvas id="bg-canvas"></canvas>
+
+<!-- Bubble layer -->
+<div class="bubbles-layer" id="bubble-layer"></div>
+
+<!-- ═══════════════════════════════
+     TOOLBAR
+═══════════════════════════════ -->
+<div id="toolbar">
+  <!-- <div class="tool-pill" onclick="togglePanel('panel-color')">
+    <div class="pip"></div>
+    Paleta
+  </div>
+  <div id="panel-color" class="panel">
+    <div class="panel-title">Paleta Marina</div>
+    <div class="swatch-grid" id="swatch-grid"></div>
+  </div> -->
+
+  <div class="tool-pill" onclick="togglePanel('panel-music')">
+    <div class="pip" style="background:var(--aqua)"></div>
+    Música
+  </div>
+  <div id="panel-music" class="panel">
+    <div class="panel-title">Pista Musical</div>
+    <label class="music-upload-label" for="music-file">
+      ♪ &nbsp;Subir Audio MP3
+    </label>
+    <input type="file" id="music-file" accept="audio/*">
+    <div id="track-display">Sin pista asignada</div>
+    <div class="m-controls">
+      <div class="m-btn" id="play-btn" onclick="togglePlay()">▶</div>
+      <div class="m-btn" onclick="stopAudio()">■</div>
+    </div>
+    <input type="range" id="vol" min="0" max="1" step="0.01" value="0.65" oninput="setVol(this.value)">
+    <div class="vol-label">Volumen</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════F
+     PAGE
+═══════════════════════════════ -->
+<div class="page">
+
+  <!-- ── HERO ── -->
+  <section class="hero">
+    <div class="hero-ornament-top"></div>
+    <div class="hero-ornament-sub"></div>
+
+    <div class="hero-content">
+      <div class="pre-title">La familia Ortiz tiene el honor de invitarle a la celebración de</div>
+
+      <!-- Photo frame -->
+      <div class="frame-wrap">
+
+        <div class="frame-outer">
+          <div class="frame-inner" id="photo-frame" onclick="document.getElementById('photo-input').click()">
+            <div class="frame-placeholder">
+             
+            </div>
+          </div>
+        </div>
+
+        <div class="xv-badge">XV Años</div>
+        <input type="file" id="photo-input" accept="image/*">
+      </div>
+
+      <!-- Name -->
+      <div class="honoree-block">
+        <div class="honoree-name">Grietell<br>Ortiz Hernandez</div>
+        <div class="honoree-age">quien cumple sus quince años</div>
+      </div>
+
+      <!-- Divider -->
+      <div class="divider-ornament">🐚 &nbsp; ✦ &nbsp; 🐚</div>
+
+      <p class="hero-subtitle">
+        Nos complace solicitar su distinguida presencia<br>
+        en esta noche mágica bajo el mar.
+      </p>
+    </div>
+  </section>
+
+  <!-- ── FECHA & HORA ── -->
+  <div class="card reveal">
+    <div class="card-title">Fecha &amp; Hora</div>
+    <div class="info-row">
+      <div class="i-icon">📅</div>
+      <div>
+        <div class="i-label">Fecha de la Celebración</div>
+        <div class="i-value">[Día, DD de Mes de AAAA]</div>
+      </div>
+    </div>
+    <div class="info-row">
+      <div class="i-icon">⏰</div>
+      <div>
+        <div class="i-label">Hora de Llegada</div>
+        <div class="i-value">[00:00 PM]</div>
+      </div>
+    </div>
+    <div class="info-row">
+      <div class="i-icon">🕐</div>
+      <div>
+        <div class="i-label">Inicio de Ceremonia</div>
+        <div class="i-value">[00:30 PM]</div>
+      </div>
+    </div>
+  </div>
+
+    <!-- ── foto2 ── -->
+  <div class="card reveal delay-1" >
+    <div class="fotos"></div>
+  </div>
+
+  <!-- ── LUGAR ── -->
+  <div class="card reveal delay-1">
+    <div class="card-title">Lugar del Evento</div>
+    <div class="info-row">
+      <div class="i-icon">🏛️</div>
+      <div>
+        <div class="i-label">Salón de Eventos</div>
+        <div class="i-value">[Nombre del Salón o Lugar]</div>
+      </div>
+    </div>
+    <div class="info-row">
+      <div class="i-icon">📍</div>
+      <div>
+        <div class="i-label">Dirección</div>
+        <div class="i-value">[Calle y Número, Colonia,<br>Ciudad, Estado]</div>
+      </div>
+    </div>
+    <a href="https://maps.google.com" target="_blank" class="btn-map">
+      📍 &nbsp; Ver Ubicación en Google Maps
+    </a>
+  </div>
+
+      <div class="card reveal delay-1" >
+      <div class="fotos"></div>
+    </div>
+
+  <!-- ── COUNTDOWN ── -->
+  <div class="card reveal">
+    <div class="card-title">Cuenta Regresiva</div>
+    <div class="countdown-intro">La gran noche se acerca…</div>
+    <div class="cd-grid">
+      <div class="cd-cell"><div class="cd-num" id="cd-d">00</div><span class="cd-lbl">Días</span></div>
+      <div class="cd-cell"><div class="cd-num" id="cd-h">00</div><span class="cd-lbl">Horas</span></div>
+      <div class="cd-cell"><div class="cd-num" id="cd-m">00</div><span class="cd-lbl">Minutos</span></div>
+      <div class="cd-cell"><div class="cd-num" id="cd-s">00</div><span class="cd-lbl">Segundos</span></div>
+    </div>
+  </div>
+
+  <!-- ── CONFIRMACIÓN ── -->
+  <div class="card reveal delay-1">
+    <div class="card-title">Confirmación de Asistencia</div>
+    <p class="form-intro">Su confirmación nos ayudará a preparar<br>cada detalle de esta noche especial.</p>
+
+    <div class="f-group">
+      <label class="f-label" for="f-name">Nombre Completo</label>
+      <input class="f-input" id="f-name" type="text" placeholder="Ingrese su nombre completo">
+    </div>
+    
+    <div class="f-group">
+      <label class="f-label" for="f-guests">Número de Invitados</label>
+      <input class="f-input" id="f-guests" type="number" min="1" max="4" placeholder="¿Cuántas personas asistirán?">
+    </div>
+   
+    <div class="f-group">
+      <label class="f-label" for="f-phone">Teléfono / WhatsApp</label>
+      <input class="f-input" id="f-phone" type="tel" placeholder="+52 (XXX) XXX-XXXX">
+    </div>
+ 
+    
+
+    <div class="btn-row">
+      <button class="btn-primary" onclick="enviarRSVP(true)">✓ &nbsp;Confirmar Asistencia</button>
+      <button class="btn-decline" onclick="enviarRSVP(false)">✗ &nbsp;No Podré Asistir</button>
+    </div>
+<!-- 
+    <div id="form-feedback"></div> -->
+
+     <div id="form-msg">🌊 ¡Gracias por tu respuesta! 🐚</div>
+
+    <div class="qr-wrap">
+      <div class="qr-box">🐚<br>Código QR<br>Asistencia</div>
+      <div class="qr-label">ESCANEA PARA CONFIRMAR</div>
+    </div>
+
+    </div>
+
+
+
+         <!-- ── foto2 ── -->
+    <div class="card reveal delay-1" >
+      <div class="fotos"></div>
+    </div>
+
+ 
+
+
+  <!-- ── DETALLES ── -->
+  <div class="card reveal">
+    <div class="card-title">Detalles del Evento</div>
+    <div class="details-grid">
+      <div class="detail-tile">
+        <span class="dt-icon">👗</span>
+        <div class="dt-label">Código de Vestimenta</div>
+        <div class="dt-value">[Formal / Etiqueta / Semi-formal]</div>
+      </div>
+      <div class="detail-tile">
+        <span class="dt-icon">🎁</span>
+        <div class="dt-label">Mesa de Regalos</div>
+        <div class="dt-value">[Tienda o información]</div>
+      </div>
+      <div class="detail-tile">
+        <span class="dt-icon">🚗</span>
+        <div class="dt-label">Estacionamiento</div>
+        <div class="dt-value">[Disponible / Valet Parking]</div>
+      </div>
+      <div class="detail-tile">
+        <span class="dt-icon">📸</span>
+        <div class="dt-label">Fotografía & Video</div>
+        <div class="dt-value">Cobertura profesional durante el evento</div>
+      </div>
+      <div class="detail-tile full">
+        <span class="dt-icon">🎉</span>
+        <div class="dt-label">Programa Especial</div>
+        <div class="dt-value">Vals de honor · Baile sorpresa · Coronación<br>Grandes sorpresas para todos los invitados</div>
+      </div>
+    </div>
+  </div>
+
+
+
+</div><!-- /page -->
+
+<!-- ── FOOTER ── -->
+<footer class="footer">
+  <div class="footer-bottom-line"></div>
+  <p class="footer-quote">
+    "Su presencia será el regalo más hermoso<br>
+    de esta celebración bajo el mar."
+  </p>
+  <div class="footer-ornament">🐚 &nbsp; ✦ &nbsp; 🐚</div>
+  <div class="footer-bottom-line"></div>
+  <div class="footer-credit">Invitación Digital · XV Años · Bajo el Mar · © 2025</div>
+</footer>
+
+<!-- Toast -->
+<div id="toast"></div>
+
+<!-- Audio -->
+<audio id="bg-audio" loop></audio>
+
+
+
+<script src="app.js"></script>
+</body>
+</html>
