@@ -1,0 +1,20 @@
+ 
+ .footer-ornament1{
+ display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 22px 0 18px;
+  color: var(--gold);
+  font-size: .75rem;
+  letter-spacing: 4px;
+ margin-top: 50px;
+}
+
+  .footer-ornament1::before,
+.footer-ornament1::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(201, 168, 76, .5), transparent);
+}

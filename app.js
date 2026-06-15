@@ -126,7 +126,7 @@ document.addEventListener('mouseup',  ()=>{ cur.style.width='10px'; cur.style.he
   for(let i=0;i<22;i++){
     const b=document.createElement('div');
     b.className='bub';
-    const s=5+Math.random()*16;
+    const s=6+Math.random()*16;
     b.style.cssText=`width:${s}px;height:${s}px;left:${Math.random()*100}%;animation-duration:${7+Math.random()*12}s;animation-delay:${Math.random()*9}s;`;
     layer.appendChild(b);
   }
@@ -134,12 +134,12 @@ document.addEventListener('mouseup',  ()=>{ cur.style.width='10px'; cur.style.he
 
 /* ── SEA PARTICLES (fish/shells) ── */
 (()=>{
-  const symbols=['🐠','🐟','🐡','🦑','🐬','🌊','🐙'];
+  const symbols=['🐠','🐟','🐡','🦑','🐬','🐋','🐙'];
   for(let i=0;i<7;i++){
     const el=document.createElement('div');
     el.className='sea-particle';
-    const dy=(Math.random()-.5)*140;
-    el.style.cssText=`top:${8+Math.random()*80}vh;--drift-y:${dy}px;animation-duration:${14+Math.random()*16}s;animation-delay:${Math.random()*12}s;`;
+    const dy=(Math.random()-.5)*140-80;
+    el.style.cssText=`top:${8+Math.random()*80}vh;--drift-y:${dy}px;animation-duration:${14+Math.random()*16}s;animation-delay:${Math.random()*12}s;font-size:${40+Math.random()*60}px;`;
     el.textContent=symbols[Math.floor(Math.random()*symbols.length)];
     document.body.appendChild(el);
   }
