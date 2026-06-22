@@ -26,26 +26,13 @@
      TOOLBAR
 ═══════════════════════════════ -->
 <div id="toolbar">
-  <!-- <div class="tool-pill" onclick="togglePanel('panel-color')">
-    <div class="pip"></div>
-    Paleta
-  </div>
-  <div id="panel-color" class="panel">
-    <div class="panel-title">Paleta Marina</div>
-    <div class="swatch-grid" id="swatch-grid"></div>
-  </div> -->
-
-  <div class="tool-pill" onclick="togglePanel('panel-music')">
+  <div class="tool-pill" onclick="togglePanel()">
     <div class="pip" style="background:var(--aqua)"></div>
     Música
   </div>
   <div id="panel-music" class="panel">
     <div class="panel-title">Pista Musical</div>
-    <label class="music-upload-label" for="music-file">
-      ♪ &nbsp;Subir Audio MP3
-    </label>
-    <input type="file" id="music-file" accept="audio/*">
-    <div id="track-display">Sin pista asignada</div>
+   <div id="track-display">Sin pista asignada</div> 
     <div class="m-controls">
       <div class="m-btn" id="play-btn" onclick="togglePlay()">▶</div>
       <div class="m-btn" onclick="stopAudio()">■</div>
@@ -272,7 +259,7 @@
 <div id="toast"></div>
 
 <!-- Audio -->
-<audio id="bg-audio" loop></audio>
+<audio id="bg-audio"  src="musica/cancion.mp3"  loop preload="auto"></audio>
 
 
 

@@ -3,20 +3,20 @@
 // ═══════════════════════════════ 
 
 /* ── CURSOR ── */
-const cur = document.getElementById('cursor');
-const ring = document.getElementById('cursor-ring');
-let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove', e=>{
-  mx=e.clientX; my=e.clientY;
-  cur.style.left=mx+'px'; cur.style.top=my+'px';
-});
-(function animRing(){
-  rx+=(mx-rx)*.12; ry+=(my-ry)*.12;
-  ring.style.left=rx+'px'; ring.style.top=ry+'px';
-  requestAnimationFrame(animRing);
-})();
-document.addEventListener('mousedown',()=>{ cur.style.width='6px'; cur.style.height='6px'; ring.style.width='42px'; ring.style.height='42px'; });
-document.addEventListener('mouseup',  ()=>{ cur.style.width='10px'; cur.style.height='10px'; ring.style.width='34px'; ring.style.height='34px'; });
+// const cur = document.getElementById('cursor');
+// const ring = document.getElementById('cursor-ring');
+// let mx=0,my=0,rx=0,ry=0;
+// document.addEventListener('mousemove', e=>{
+//   mx=e.clientX; my=e.clientY;
+//   cur.style.left=mx+'px'; cur.style.top=my+'px';
+// });
+// (function animRing(){
+//   rx+=(mx-rx)*.12; ry+=(my-ry)*.12;
+//   ring.style.left=rx+'px'; ring.style.top=ry+'px';
+//   requestAnimationFrame(animRing);
+// })();
+// document.addEventListener('mousedown',()=>{ cur.style.width='6px'; cur.style.height='6px'; ring.style.width='42px'; ring.style.height='42px'; });
+// document.addEventListener('mouseup',  ()=>{ cur.style.width='10px'; cur.style.height='10px'; ring.style.width='34px'; ring.style.height='34px'; });
 
 /* ── CANVAS OCEAN ── */
 (()=>{
@@ -138,12 +138,27 @@ document.addEventListener('mouseup',  ()=>{ cur.style.width='10px'; cur.style.he
   for(let i=0;i<7;i++){
     const el=document.createElement('div');
     el.className='sea-particle';
+    
+    // Crear un contenedor interno para el volteo
+    const inner = document.createElement('span');
+    inner.style.display = 'inline-block';
+    inner.style.transform = 'scaleX(-1)';
+    inner.textContent = symbols[Math.floor(Math.random()*symbols.length)];
+    el.appendChild(inner);
+    
     const dy=(Math.random()-.5)*140-80;
-    el.style.cssText=`top:${8+Math.random()*80}vh;--drift-y:${dy}px;animation-duration:${14+Math.random()*16}s;animation-delay:${Math.random()*12}s;font-size:${40+Math.random()*60}px;`;
-    el.textContent=symbols[Math.floor(Math.random()*symbols.length)];
+    el.style.cssText=`
+      position: fixed;
+      top: ${8+Math.random()*80}vh;
+      --drift-y: ${dy}px;
+      animation-duration: ${14+Math.random()*16}s;
+      animation-delay: ${Math.random()*12}s;
+      font-size: ${40+Math.random()*60}px;
+    `;
     document.body.appendChild(el);
   }
 })();
+
 
 /* ── SCROLL REVEAL ── */
 const revEls=document.querySelectorAll('.reveal');
@@ -202,56 +217,59 @@ async function enviarRSVP(asiste){
 }
 
 /* ── TOOLBAR PANELS ── */
-function togglePanel(id){
-  const el=document.getElementById(id);
-  el.classList.toggle('open');
-  ['panel-color','panel-music'].filter(p=>p!==id).forEach(p=>document.getElementById(p).classList.remove('open'));
+function togglePanel(){
+  const panel=document.getElementById('panel-music');
+
+  if(panel.style.display === 'block'){
+    panel.style.display = 'none'
+  }else {
+    panel.style.display = 'block'
+  }
 }
 
 /* ── COLOR PALETTES ── */
-const palettes=[
-  {name:'Océano Real',      grad:'135deg,#0099a8,#071830,#c9a84c',
-    v:{'--deep':'#050e1f','--navy':'#071830','--midnight':'#09244a','--teal':'#006d77','--aqua':'#0099a8','--seafoam':'#83c5be','--gold':'#c9a84c','--gold-lt':'#e8d5a3','--gold-glow':'#f0d97a'}},
-  {name:'Medianoche Índigo',  grad:'135deg,#4a3f8c,#0d0b2a,#d4af37',
-    v:{'--deep':'#06040f','--navy':'#0d0b2a','--midnight':'#1a1650','--teal':'#4a3f8c','--aqua':'#7c6fbf','--seafoam':'#b3aadd','--gold':'#d4af37','--gold-lt':'#e8d08a','--gold-glow':'#f7e47a'}},
-  {name:'Coral Champagne',   grad:'135deg,#c17b6b,#2a1018,#e8c07a',
-    v:{'--deep':'#140609','--navy':'#2a1018','--midnight':'#3d1a28','--teal':'#9b4e55','--aqua':'#c17b6b','--seafoam':'#e0a99e','--gold':'#c9924c','--gold-lt':'#e8cba3','--gold-glow':'#f5dea0'}},
-  {name:'Turquesa Esmeralda',grad:'135deg,#00c6a0,#041c18,#b8d96a',
-    v:{'--deep':'#021510','--navy':'#041c18','--midnight':'#063028','--teal':'#00a87a','--aqua':'#00c6a0','--seafoam':'#72e0c0','--gold':'#a8c84c','--gold-lt':'#d4e898','--gold-glow':'#e0f278'}},
-  {name:'Perla Clásica',     grad:'135deg,#6ba8c4,#0d1a2a,#d4c09a',
-    v:{'--deep':'#07101a','--navy':'#0d1a2a','--midnight':'#122540','--teal':'#3a7a96','--aqua':'#6ba8c4','--seafoam':'#aad0e0','--gold':'#c4a87a','--gold-lt':'#ddd0a8','--gold-glow':'#ede0b8'}},
-  {name:'Noche Violeta',     grad:'135deg,#8b5cf6,#0d0520,#f0c070',
-    v:{'--deep':'#080310','--navy':'#0d0520','--midnight':'#180a38','--teal':'#5e3a9e','--aqua':'#8b5cf6','--seafoam':'#c4b0f8','--gold':'#d4a84c','--gold-lt':'#ecd4a0','--gold-glow':'#f8e07a'}},
-];
+// const palettes=[
+//   {name:'Océano Real',      grad:'135deg,#0099a8,#071830,#c9a84c',
+//     v:{'--deep':'#050e1f','--navy':'#071830','--midnight':'#09244a','--teal':'#006d77','--aqua':'#0099a8','--seafoam':'#83c5be','--gold':'#c9a84c','--gold-lt':'#e8d5a3','--gold-glow':'#f0d97a'}},
+//   {name:'Medianoche Índigo',  grad:'135deg,#4a3f8c,#0d0b2a,#d4af37',
+//     v:{'--deep':'#06040f','--navy':'#0d0b2a','--midnight':'#1a1650','--teal':'#4a3f8c','--aqua':'#7c6fbf','--seafoam':'#b3aadd','--gold':'#d4af37','--gold-lt':'#e8d08a','--gold-glow':'#f7e47a'}},
+//   {name:'Coral Champagne',   grad:'135deg,#c17b6b,#2a1018,#e8c07a',
+//     v:{'--deep':'#140609','--navy':'#2a1018','--midnight':'#3d1a28','--teal':'#9b4e55','--aqua':'#c17b6b','--seafoam':'#e0a99e','--gold':'#c9924c','--gold-lt':'#e8cba3','--gold-glow':'#f5dea0'}},
+//   {name:'Turquesa Esmeralda',grad:'135deg,#00c6a0,#041c18,#b8d96a',
+//     v:{'--deep':'#021510','--navy':'#041c18','--midnight':'#063028','--teal':'#00a87a','--aqua':'#00c6a0','--seafoam':'#72e0c0','--gold':'#a8c84c','--gold-lt':'#d4e898','--gold-glow':'#e0f278'}},
+//   {name:'Perla Clásica',     grad:'135deg,#6ba8c4,#0d1a2a,#d4c09a',
+//     v:{'--deep':'#07101a','--navy':'#0d1a2a','--midnight':'#122540','--teal':'#3a7a96','--aqua':'#6ba8c4','--seafoam':'#aad0e0','--gold':'#c4a87a','--gold-lt':'#ddd0a8','--gold-glow':'#ede0b8'}},
+//   {name:'Noche Violeta',     grad:'135deg,#8b5cf6,#0d0520,#f0c070',
+//     v:{'--deep':'#080310','--navy':'#0d0520','--midnight':'#180a38','--teal':'#5e3a9e','--aqua':'#8b5cf6','--seafoam':'#c4b0f8','--gold':'#d4a84c','--gold-lt':'#ecd4a0','--gold-glow':'#f8e07a'}},
+// ];
 
-const sg=document.getElementById('swatch-grid');
-palettes.forEach((p,i)=>{
-  const sw=document.createElement('div');
-  sw.className='swatch'+(i===0?' active':'');
-  sw.style.background=`linear-gradient(${p.grad})`;
-  sw.innerHTML=`<span>${p.name}</span>`;
-  sw.onclick=()=>{
-    document.querySelectorAll('.swatch').forEach(s=>s.classList.remove('active'));
-    sw.classList.add('active');
-    const root=document.documentElement;
-    Object.entries(p.v).forEach(([k,v])=>root.style.setProperty(k,v));
-    document.getElementById('panel-color').classList.remove('open');
-  };
-  sg.appendChild(sw);
-});
+// const sg=document.getElementById('swatch-grid');
+// palettes.forEach((p,i)=>{
+//   const sw=document.createElement('div');
+//   sw.className='swatch'+(i===0?' active':'');
+//   sw.style.background=`linear-gradient(${p.grad})`;
+//   sw.innerHTML=`<span>${p.name}</span>`;
+//   sw.onclick=()=>{
+//     document.querySelectorAll('.swatch').forEach(s=>s.classList.remove('active'));
+//     sw.classList.add('active');
+//     const root=document.documentElement;
+//     Object.entries(p.v).forEach(([k,v])=>root.style.setProperty(k,v));
+//     document.getElementById('panel-color').classList.remove('open');
+//   };
+//   sg.appendChild(sw);
+// });
 
 /* ── MUSIC ── */
 const aud=document.getElementById('bg-audio');
 let playing=false;
-document.getElementById('music-file').addEventListener('change',function(e){
-  const f=e.target.files[0]; if(!f) return;
-  document.getElementById('track-display').textContent=f.name;
-  aud.src=URL.createObjectURL(f);
-  aud.load(); aud.play(); playing=true;
-  document.getElementById('play-btn').textContent='⏸';
-});
+// document.getElementById('music-file').addEventListener('change',function(e){
+//   const f=e.target.files[0]; if(!f) return;
+//   document.getElementById('track-display').textContent=f.name;
+//   aud.src=URL.createObjectURL(f);
+//   aud.load(); aud.play(); playing=true;
+//   document.getElementById('play-btn').textContent='⏸';
+// });
 function togglePlay(){
-  if(!aud.src) return;
   if(playing){aud.pause();document.getElementById('play-btn').textContent='▶';}
   else{aud.play();document.getElementById('play-btn').textContent='⏸';}
   playing=!playing;
