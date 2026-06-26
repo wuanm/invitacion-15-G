@@ -56,6 +56,13 @@ body {
 
 
 }
+/* ------------------------------------------------- */
+.great-vibes-regular {
+  font-family: "Great Vibes", cursive;
+  font-weight: 400;
+  font-style: normal;
+}
+
 
 html {
   min-height: 100%;
@@ -293,6 +300,7 @@ body::before {
   margin-right: 10px;
 
 
+
 }
 
 /* Vignette overlay */
@@ -301,7 +309,8 @@ body::before {
   position: absolute;
   inset: 0;
   background: radial-gradient(ellipse at 50% 10%,
-      rgba(0, 153, 168, .06) 0%, transparent 60%),
+      /* rgba(0, 153, 168, .06) 0%, transparent 60%), */
+       rgba(0, 153, 168, .06) 0%, transparent 100%),
     linear-gradient(180deg,
       rgba(5, 14, 31, 0) 30%,
       rgba(5, 14, 31, .85) 75%,
@@ -338,21 +347,20 @@ body::before {
   width: 100%;
 }
 
-.pre-title {
+
+
+.pre-title{
+  /* Fuente principal basada en tu imagen (Roundhand) */
   margin-top: 10px;
-  font-family: 'EB Garamond', serif;
-  font-style: italic;
-  font-size: 1.6rem;
-  /* un poco más grande */
-  letter-spacing: 6px;
-  color: var(--gold-glow);
-  /* usa el más brillante */
-  text-transform: uppercase;
-  margin-bottom: 22px;
-  text-shadow: 0 0 8px rgba(240, 217, 122, 0.4);
-  /* brillo adicional */
-  font-weight: 500;
-  /* un poco más de peso */
+  font-family: "Imperial Script", cursive;
+  font-weight: 400;
+  font-style: normal;
+  font-size: clamp(2.5rem, 6vw, 4.5rem); 
+  line-height: .8;
+  letter-spacing: 1px;
+  /* color: var(--gold-glow); */
+   color: var(--pearl);
+  text-align: center;
 }
 
 /* Photo frame */
@@ -361,26 +369,30 @@ body::before {
   position: relative;
   margin-bottom: 28px;
   width: 100%;
+  height: 500px;
 }
 
 .frame-outer {
   width: 100%;
-  height: 300px;
+  /* height: 300px; */
+  height: 100%;
   position: relative;
 }
+
+
 
 /* aqui foto sde grietel */
 .frame-inner {
   position: relative;
-  z-index: 2;
   width: 100%;
   height: 100%;
   overflow: hidden;
-  ;
   background-image: url(https://cdn.myportfolio.com/7b08e3e3765bf644445481f77b7c22a4/2ceb00a6-fc99-44c0-97b2-9f833e15bfa7_rw_1920.jpg?h=781ba841f2671f1d7e9ae58e84212b9b);
   background-position: center;
   background-repeat: no-repeat;
-  background-size: cover;
+  /* background-size: cover; */
+  background-size:cover;
+
 
 
 
@@ -391,6 +403,7 @@ box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, .12);
   justify-content: center;
   cursor: pointer;
   margin-top: 20px;
+  border-radius: 20px;
 }
 
 #photo-input {
@@ -466,9 +479,13 @@ box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, .12);
 }
 
 .honoree-name {
-  font-family: 'Playfair Display', serif;
+  /* font-family: 'Playfair Display', serif;
   font-size: clamp(2rem, 7vw, 2.8rem);
-  font-weight: 700;
+  font-weight: 700; */
+    font-family: "Imperial Script", cursive;
+  font-weight: 400;
+  font-style: normal;
+  font-size: clamp(2.5rem, 6vw, 4.5rem); 
   color: var(--pearl);
   line-height: 1.15;
   letter-spacing: .5px;
