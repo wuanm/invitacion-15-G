@@ -496,7 +496,7 @@ box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, .12);
   font-family: 'EB Garamond', serif;
   font-style: italic;
   font-size: 1.1rem;
-  color: var(--gold-lt);
+  color: var(--gold);
   margin-top: 6px;
   letter-spacing: 1px;
 }
@@ -524,7 +524,8 @@ box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, .12);
   font-family: 'EB Garamond', serif;
   font-style: italic;
   font-size: 1rem;
-  color: rgba(245, 239, 224, .6);
+  /* color: rgba(245, 239, 224, .6); */
+  color: var(--gold);
   line-height: 1.75;
   max-width: 340px;
   margin: 0 auto;
@@ -1027,7 +1028,8 @@ select.f-input {
   font-family: 'Playfair Display', serif;
   font-style: italic;
   font-size: 1.15rem;
-  color: rgba(245, 239, 224, .55);
+  /* color: rgba(245, 239, 224, .55); */
+  color: var(--gold);
   line-height: 1.8;
   margin-bottom: 24px;
 }
