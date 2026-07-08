@@ -303,7 +303,8 @@ function togglePanel(){
 
 /* ── MUSIC ── */
 const aud=document.getElementById('bg-audio');
-let playing=false;
+// let playing=false;
+let playing="";
 
 
 function togglePlay(){
@@ -332,6 +333,21 @@ function  bloquearBotonEnviar(){
         }
 
 };
+
+
+//  Boton de sobre de invitacion
+function entrarInvitacion(){
+  const aud=document.getElementById('bg-audio');
+  const visibilidadDeContenedor = document.querySelector('.contenedor');
+  const apagadoVisibilidadSobre = document.querySelector('.image-sobre');
+ 
+
+  visibilidadDeContenedor.style.display='flex';
+  apagadoVisibilidadSobre.style.display= 'none';
+
+   playing=true;
+   aud.play();
+}
 
 
 // <!--

@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <link rel="shortcut icon" href="15.png" type="image/x-icon">
+<link rel="stylesheet" href="sobre.css">
 <link rel="stylesheet" href="figura.css">
 <title>XV Años · Bajo el Mar</title>
 <link rel="stylesheet" href="style.css">
@@ -20,8 +21,15 @@
 
 
 <body>
+  <div class="image-sobre">
+  
+    <div class="contenedor-imagen">
+        <img src="./sobre.png" alt="Imagen de sobre" >
+        <button class="entrarInvitacion" id="entrarInvitacion" onclick="entrarInvitacion()"></button>
+    </div>
+  </div>
 
-
+<div class="contenedor" >
 <!-- Background canvas -->
 <canvas id="bg-canvas"></canvas>
 
@@ -280,7 +288,7 @@
 <!-- Audio -->
 <audio id="bg-audio"  src="musica/cancion.mp3"  loop preload="auto"></audio>
 
-
+</div>
 
 <script src="app.js"></script>
 </body>

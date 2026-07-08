@@ -56,6 +56,11 @@ body {
 
 
 }
+.contenedor{
+  display: none;
+  justify-content: center;
+  flex-direction: column;
+}
 /* ------------------------------------------------- */
 .great-vibes-regular {
   font-family: "Great Vibes", cursive;
@@ -76,7 +81,7 @@ body {
   font-family: 'Jost', sans-serif;
   font-weight: 300;
   overflow-x: hidden;
-  cursor: none;
+    cursor:default;
   -webkit-font-smoothing: antialiased;
 }
 
