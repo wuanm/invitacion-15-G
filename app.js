@@ -168,10 +168,19 @@ const revObs=new IntersectionObserver(entries=>{
 revEls.forEach(r=>revObs.observe(r));
 
 /* ── COUNTDOWN — Cambia esta fecha ── */
-const EVENT=new Date('2025-11-15T18:00:00');
+const EVENT=new Date('2026-10-03T18:00:00');
 function tick(){
   const diff=EVENT-new Date();
-  if(diff<=0){ ['cd-d','cd-h','cd-m','cd-s'].forEach(id=>document.getElementById(id).textContent='00'); return; }
+  // if(diff<=0){ ['cd-d','cd-h','cd-m','cd-s'].forEach(id=>document.getElementById(id).textContent='00'); return; }
+  if(diff<=0) {
+    ['cd-d','cd-h','cd-m','cd-s'].forEach(id=>document.getElementById(id).textContent='00'); 
+    const mensaje =document.getElementById('mensaje');
+    if(mensaje){
+      mensaje.style.display='block';
+    }
+    return;
+  }
+
   document.getElementById('cd-d').textContent=String(Math.floor(diff/864e5)).padStart(2,'0');
   document.getElementById('cd-h').textContent=String(Math.floor(diff%864e5/36e5)).padStart(2,'0');
   document.getElementById('cd-m').textContent=String(Math.floor(diff%36e5/6e4)).padStart(2,'0');
@@ -190,31 +199,125 @@ document.getElementById('photo-input').addEventListener('change',function(e){
 });
 
 /* ── RSVP → GOOGLE SHEETS ──
-   Reemplaza con tu Google Apps Script URL */
-const GS_URL='https://script.google.com/macros/s/TU_ID_AQUI/exec';
+//    Reemplaza con tu Google Apps Script URL */
+// const GS_URL='https://script.google.com/macros/s/AKfycbxhJ-hXjfdvo9tey0_7UG6jl4oQt479oGPZW7MUyw6lZUbrKKmjRJqI7sKAT0QEEx4u/exec';
 
-async function enviarRSVP(asiste){
-  const nombre=document.getElementById('f-name').value.trim();
-  if(!nombre){ toast('⚠️ Por favor ingrese su nombre'); return; }
-  const payload={
-    timestamp:new Date().toISOString(),
-    nombre, asistencia:asiste?'Sí':'No',
-    invitados:document.getElementById('f-guests').value||'1',
-    telefono:document.getElementById('f-phone').value,
-    menu:document.getElementById('f-menu').value
-  };
-  try{
-    await fetch(GS_URL,{method:'POST',mode:'no-cors',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify(payload)});
-  }catch(e){}
-  const fb=document.getElementById('form-feedback');
-  fb.style.display='block';
-  fb.innerHTML=asiste
-    ? '🌊 Gracias por confirmar su asistencia.<br>Con gran alegría le esperamos en esta noche especial. 🐚'
-    : '💙 Agradecemos su respuesta.<br>Lamentamos que no pueda acompañarnos, pero le llevamos en nuestros pensamientos.';
-  toast(asiste?'✅ Asistencia confirmada':'Respuesta registrada');
+// async function enviarRSVP(asiste){
+//   const nombre=document.getElementById('f-name').value.trim();
+//   if(!nombre){ toast('⚠️ Por favor ingrese su nombre'); return; }
+//   const payload={
+//     timestamp:new Date().toISOString(),
+//     nombre, asistencia:asiste?'Sí':'No',
+//     invitados:document.getElementById('f-guests').value||'1',
+//     telefono:document.getElementById('f-phone').value,
+//     // menu:document.getElementById('f-menu').value
+//   };
+//   try{
+//     await fetch(GS_URL,{method:'POST',mode:'no-cors',
+//       headers:{'Content-Type':'application/json'},
+//       body:JSON.stringify(payload)});
+//   }catch(e){}
+//   const fb=document.getElementById('form-feedback');
+//   fb.style.display='block';
+//   fb.innerHTML=asiste
+//     ? '🌊 Gracias por confirmar su asistencia.<br>Con gran alegría le esperamos en esta noche especial. 🐚'
+//     : '💙 Agradecemos su respuesta.<br>Lamentamos que no pueda acompañarnos, pero le llevamos en nuestros pensamientos.';
+//   toast(asiste?'✅ Asistencia confirmada':'Respuesta registrada');
+// }
+// 🔥 Reemplaza con tu URL correcta
+// const GS_URL = 'https://script.google.com/macros/s/AKfycbxhJ-hXjfdvo9tey0_7UG6jl4oQt479oGPZW7MUyw6lZUbrKKmjRJqI7sKAT0QEEx4u/exec';
+
+// 🔥 URL de tu Web App
+const GS_URL = 'https://script.google.com/macros/s/AKfycbwjlqYu35ygtsCZPtmjvMmAQrEVZSYq5bZn7FvKN09MPZYVZeKfz4u5dL7ct0nOSejF/exec';
+
+async function enviarRSVP(asiste) {
+    // 📌 Obtener nombre
+    const nombre = document.getElementById('f-name').value.trim();
+    if (!nombre) {
+        toast('⚠️ Por favor ingrese su nombre');
+        return;
+    }
+
+    // 📌 Preparar datos
+    const payload = {
+        timestamp: new Date().toISOString(),
+        nombre: nombre,
+        asistencia: asiste ? 'Sí' : 'No',
+        invitados: document.getElementById('f-guests').value || '1',
+        telefono: document.getElementById('f-phone').value || '',
+        menu: document.getElementById('f-menu')?.value || ''
+    };
+
+    // 📌 Enviar datos
+    try {
+        const response = await fetch(GS_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload)
+        });
+
+        toast('✅ Datos guardados correctamente');
+
+        // 📌 Limpiar formulario
+        document.getElementById('f-name').value = '';
+        document.getElementById('f-guests').value = '1';
+        document.getElementById('f-phone').value = '';
+
+        // 📌 Mostrar mensaje de confirmación
+        const fb = document.getElementById('form-feedback');
+        fb.style.display = 'block';
+        fb.innerHTML = asiste
+            ? '🌊 ¡Gracias por confirmar su asistencia!'
+            : '💙 Agradecemos su respuesta.';
+
+    } catch (error) {
+        console.error('❌ Error:', error);
+        toast('❌ Error de conexión. Intente nuevamente.');
+    }
 }
+
+// 📌 Función para mostrar notificaciones
+function toast(mensaje) {
+    const toast = document.createElement('div');
+    toast.style.cssText = `
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #333;
+        color: white;
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-family: Arial, sans-serif;
+        z-index: 9999;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        animation: fadeIn 0.3s ease;
+    `;
+    toast.textContent = mensaje;
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transition = 'opacity 0.5s ease';
+        setTimeout(() => toast.remove(), 500);
+    }, 3000);
+}
+
+// 📌 Estilos para la animación (opcional)
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+        to { opacity: 1; transform: translateX(-50%) translateY(0); }
+    }
+`;
+document.head.appendChild(style);
+
+
+
 
 /* ── TOOLBAR PANELS ── */
 function togglePanel(){
@@ -227,48 +330,13 @@ function togglePanel(){
   }
 }
 
-/* ── COLOR PALETTES ── */
-// const palettes=[
-//   {name:'Océano Real',      grad:'135deg,#0099a8,#071830,#c9a84c',
-//     v:{'--deep':'#050e1f','--navy':'#071830','--midnight':'#09244a','--teal':'#006d77','--aqua':'#0099a8','--seafoam':'#83c5be','--gold':'#c9a84c','--gold-lt':'#e8d5a3','--gold-glow':'#f0d97a'}},
-//   {name:'Medianoche Índigo',  grad:'135deg,#4a3f8c,#0d0b2a,#d4af37',
-//     v:{'--deep':'#06040f','--navy':'#0d0b2a','--midnight':'#1a1650','--teal':'#4a3f8c','--aqua':'#7c6fbf','--seafoam':'#b3aadd','--gold':'#d4af37','--gold-lt':'#e8d08a','--gold-glow':'#f7e47a'}},
-//   {name:'Coral Champagne',   grad:'135deg,#c17b6b,#2a1018,#e8c07a',
-//     v:{'--deep':'#140609','--navy':'#2a1018','--midnight':'#3d1a28','--teal':'#9b4e55','--aqua':'#c17b6b','--seafoam':'#e0a99e','--gold':'#c9924c','--gold-lt':'#e8cba3','--gold-glow':'#f5dea0'}},
-//   {name:'Turquesa Esmeralda',grad:'135deg,#00c6a0,#041c18,#b8d96a',
-//     v:{'--deep':'#021510','--navy':'#041c18','--midnight':'#063028','--teal':'#00a87a','--aqua':'#00c6a0','--seafoam':'#72e0c0','--gold':'#a8c84c','--gold-lt':'#d4e898','--gold-glow':'#e0f278'}},
-//   {name:'Perla Clásica',     grad:'135deg,#6ba8c4,#0d1a2a,#d4c09a',
-//     v:{'--deep':'#07101a','--navy':'#0d1a2a','--midnight':'#122540','--teal':'#3a7a96','--aqua':'#6ba8c4','--seafoam':'#aad0e0','--gold':'#c4a87a','--gold-lt':'#ddd0a8','--gold-glow':'#ede0b8'}},
-//   {name:'Noche Violeta',     grad:'135deg,#8b5cf6,#0d0520,#f0c070',
-//     v:{'--deep':'#080310','--navy':'#0d0520','--midnight':'#180a38','--teal':'#5e3a9e','--aqua':'#8b5cf6','--seafoam':'#c4b0f8','--gold':'#d4a84c','--gold-lt':'#ecd4a0','--gold-glow':'#f8e07a'}},
-// ];
 
-// const sg=document.getElementById('swatch-grid');
-// palettes.forEach((p,i)=>{
-//   const sw=document.createElement('div');
-//   sw.className='swatch'+(i===0?' active':'');
-//   sw.style.background=`linear-gradient(${p.grad})`;
-//   sw.innerHTML=`<span>${p.name}</span>`;
-//   sw.onclick=()=>{
-//     document.querySelectorAll('.swatch').forEach(s=>s.classList.remove('active'));
-//     sw.classList.add('active');
-//     const root=document.documentElement;
-//     Object.entries(p.v).forEach(([k,v])=>root.style.setProperty(k,v));
-//     document.getElementById('panel-color').classList.remove('open');
-//   };
-//   sg.appendChild(sw);
-// });
 
 /* ── MUSIC ── */
 const aud=document.getElementById('bg-audio');
 let playing=false;
-// document.getElementById('music-file').addEventListener('change',function(e){
-//   const f=e.target.files[0]; if(!f) return;
-//   document.getElementById('track-display').textContent=f.name;
-//   aud.src=URL.createObjectURL(f);
-//   aud.load(); aud.play(); playing=true;
-//   document.getElementById('play-btn').textContent='⏸';
-// });
+
+
 function togglePlay(){
   if(playing){aud.pause();document.getElementById('play-btn').textContent='▶';}
   else{aud.play();document.getElementById('play-btn').textContent='⏸';}
@@ -295,16 +363,16 @@ function toast(msg){
 
 //   2. Extensiones → Apps Script → pega:
 
-//      function doPost(e) {
-//        var s = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-//        var d = JSON.parse(e.postData.contents);
-//        s.appendRow([d.timestamp, d.nombre, d.asistencia, d.invitados, d.telefono, d.menu]);
-//        return ContentService.createTextOutput(JSON.stringify({ok:true}))
-//          .setMimeType(ContentService.MimeType.JSON);
-//      }
-//      function doGet(e) {
-//        return ContentService.createTextOutput('ok');
-//      }
+    //  function doPost(e) {
+    //    var s = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    //    var d = JSON.parse(e.postData.contents);
+    //    s.appendRow([d.timestamp, d.nombre, d.asistencia, d.invitados, d.telefono]);
+    //    return ContentService.createTextOutput(JSON.stringify({ok:true}))
+    //      .setMimeType(ContentService.MimeType.JSON);
+    //  }
+    //  function doGet(e) {
+    //    return ContentService.createTextOutput('ok');
+    //  }
 
 //   3. Implementar → Nueva implementación → Aplicación web
 //      Ejecutar como: Yo | Acceso: Cualquier persona

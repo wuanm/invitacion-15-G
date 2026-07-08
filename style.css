@@ -107,7 +107,8 @@ body::before {
   width: 100%;
   height: 100%;
   z-index: 0;
-  pointer-events: none;
+  cursor:default;
+  
 }
 
 /* ═══════════════════════════════
@@ -276,6 +277,7 @@ body::before {
   max-width: 500px;
   margin: 0 auto;
   padding-bottom: 80px;
+  cursor: default;
 
 }
 
@@ -295,7 +297,6 @@ body::before {
   margin-top: 20px;
   margin-bottom: 80px;
   border-radius: 20px;
-  border: 1px solid black;
   margin-left: 10px;
   margin-right: 10px;
  
@@ -733,6 +734,38 @@ box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, .12);
   text-transform: uppercase;
   margin-top: 5px;
   font-weight: 500;
+}
+
+.mensaje {
+   display: none;
+    border: 1px solid rgba(14, 184, 200, 0.3);
+    text-align: center;
+    margin-top: 20px;
+    padding: 20px 30px;
+    border-radius: 16px;
+    background: rgba(14, 184, 200, 0.06);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 30px rgba(14, 184, 200, 0.15);
+    animation: mensajePulse 2s ease-in-out infinite;
+    font-size: 2rem;
+}
+
+.mensaje-texto {
+    font-size: 2.2rem;
+    font-weight: 700;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    background: linear-gradient(135deg, 
+        #0eb8c8 0%, 
+        #4dd9e5 30%, 
+        #a8f0f5 50%, 
+        #4dd9e5 70%, 
+        #0eb8c8 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 40px rgba(14, 184, 200, 0.3);
+    letter-spacing: 0.02em;
 }
 
 /* ═══════════════════════════════
