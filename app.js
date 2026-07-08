@@ -1,22 +1,4 @@
-//  ═══════════════════════════════
-//      SCRIPTS
-// ═══════════════════════════════ 
 
-/* ── CURSOR ── */
-// const cur = document.getElementById('cursor');
-// const ring = document.getElementById('cursor-ring');
-// let mx=0,my=0,rx=0,ry=0;
-// document.addEventListener('mousemove', e=>{
-//   mx=e.clientX; my=e.clientY;
-//   cur.style.left=mx+'px'; cur.style.top=my+'px';
-// });
-// (function animRing(){
-//   rx+=(mx-rx)*.12; ry+=(my-ry)*.12;
-//   ring.style.left=rx+'px'; ring.style.top=ry+'px';
-//   requestAnimationFrame(animRing);
-// })();
-// document.addEventListener('mousedown',()=>{ cur.style.width='6px'; cur.style.height='6px'; ring.style.width='42px'; ring.style.height='42px'; });
-// document.addEventListener('mouseup',  ()=>{ cur.style.width='10px'; cur.style.height='10px'; ring.style.width='34px'; ring.style.height='34px'; });
 
 /* ── CANVAS OCEAN ── */
 (()=>{
@@ -189,48 +171,33 @@ function tick(){
 setInterval(tick,1000); tick();
 
 /* ── PHOTO UPLOAD ── */
-document.getElementById('photo-input').addEventListener('change',function(e){
-  const f=e.target.files[0]; if(!f) return;
-  const r=new FileReader();
-  r.onload=ev=>{
-    document.getElementById('photo-frame').innerHTML=`<img src="${ev.target.result}" alt="Festejada">`;
-  };
-  r.readAsDataURL(f);
-});
-
-/* ── RSVP → GOOGLE SHEETS ──
-//    Reemplaza con tu Google Apps Script URL */
-// const GS_URL='https://script.google.com/macros/s/AKfycbxhJ-hXjfdvo9tey0_7UG6jl4oQt479oGPZW7MUyw6lZUbrKKmjRJqI7sKAT0QEEx4u/exec';
-
-// async function enviarRSVP(asiste){
-//   const nombre=document.getElementById('f-name').value.trim();
-//   if(!nombre){ toast('⚠️ Por favor ingrese su nombre'); return; }
-//   const payload={
-//     timestamp:new Date().toISOString(),
-//     nombre, asistencia:asiste?'Sí':'No',
-//     invitados:document.getElementById('f-guests').value||'1',
-//     telefono:document.getElementById('f-phone').value,
-//     // menu:document.getElementById('f-menu').value
+// document.getElementById('photo-input').addEventListener('change',function(e){
+//   const f=e.target.files[0]; if(!f) return;
+//   const r=new FileReader();
+//   r.onload=ev=>{
+//     document.getElementById('photo-frame').innerHTML=`<img src="${ev.target.result}" alt="Festejada">`;
 //   };
-//   try{
-//     await fetch(GS_URL,{method:'POST',mode:'no-cors',
-//       headers:{'Content-Type':'application/json'},
-//       body:JSON.stringify(payload)});
-//   }catch(e){}
-//   const fb=document.getElementById('form-feedback');
-//   fb.style.display='block';
-//   fb.innerHTML=asiste
-//     ? '🌊 Gracias por confirmar su asistencia.<br>Con gran alegría le esperamos en esta noche especial. 🐚'
-//     : '💙 Agradecemos su respuesta.<br>Lamentamos que no pueda acompañarnos, pero le llevamos en nuestros pensamientos.';
-//   toast(asiste?'✅ Asistencia confirmada':'Respuesta registrada');
-// }
-// 🔥 Reemplaza con tu URL correcta
-// const GS_URL = 'https://script.google.com/macros/s/AKfycbxhJ-hXjfdvo9tey0_7UG6jl4oQt479oGPZW7MUyw6lZUbrKKmjRJqI7sKAT0QEEx4u/exec';
+//   r.readAsDataURL(f);
+// });
+
+
+
+// Envio de datos a hoja de calculo de google docs
 
 // 🔥 URL de tu Web App
 const GS_URL = 'https://script.google.com/macros/s/AKfycbwjlqYu35ygtsCZPtmjvMmAQrEVZSYq5bZn7FvKN09MPZYVZeKfz4u5dL7ct0nOSejF/exec';
 
+const confirmo = localStorage.getItem('rsvp_confirmado');
+
+//  evento trabaja cuando ya se hizo una confirmación
+if(confirmo){
+      bloquearBotonEnviar()
+}
+
+
+
 async function enviarRSVP(asiste) {
+   
     // 📌 Obtener nombre
     const nombre = document.getElementById('f-name').value.trim();
     if (!nombre) {
@@ -259,8 +226,9 @@ async function enviarRSVP(asiste) {
             body: JSON.stringify(payload)
         });
 
-        toast('✅ Datos guardados correctamente');
-
+         localStorage.setItem('rsvp_confirmado','true');
+          bloquearBotonEnviar();
+       
         // 📌 Limpiar formulario
         document.getElementById('f-name').value = '';
         document.getElementById('f-guests').value = '1';
@@ -278,6 +246,7 @@ async function enviarRSVP(asiste) {
         toast('❌ Error de conexión. Intente nuevamente.');
     }
 }
+
 
 // 📌 Función para mostrar notificaciones
 function toast(mensaje) {
@@ -351,6 +320,18 @@ function toast(msg){
   t.textContent=msg; t.classList.add('show');
   setTimeout(()=>t.classList.remove('show'),3200);
 }
+
+
+function  bloquearBotonEnviar(){
+   const btnConfirmar = document.querySelector(".btn-primary");
+        if (btnConfirmar) {
+            btnConfirmar.innerHTML = ' ¡Confirmado!';
+            btnConfirmar.disabled = true;
+            btnConfirmar.style.cursor = 'none';
+            btnConfirmar.style.opacity = '0.6';
+        }
+
+};
 
 
 // <!--
