@@ -346,7 +346,7 @@ function entrarInvitacion(){
   apagadoVisibilidadSobre.style.display= 'none';
 
    playing=true;
-   aud.play();
+    aud.play();
 }
 
 
