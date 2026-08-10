@@ -103,13 +103,53 @@
 })();
 
 /* ── BUBBLES ── */
-(()=>{
-  const layer=document.getElementById('bubble-layer');
-  for(let i=0;i<22;i++){
-    const b=document.createElement('div');
-    b.className='bub';
-    const s=6+Math.random()*16;
-    b.style.cssText=`width:${s}px;height:${s}px;left:${Math.random()*100}%;animation-duration:${7+Math.random()*12}s;animation-delay:${Math.random()*9}s;`;
+// (()=>{
+//   const layer=document.getElementById('bubble-layer');
+//   for(let i=0;i<22;i++){
+//     const b=document.createElement('div');
+//     b.className='bub';
+//     const s=6+Math.random()*16;
+//     b.style.cssText=`width:${s}px;height:${s}px;left:${Math.random()*100}%;animation-duration:${7+Math.random()*12}s;animation-delay:${Math.random()*9}s;`;
+//     layer.appendChild(b);
+//   }
+// })();
+
+/* ── BURBUJAS MEJORADAS ── */
+(() => {
+  const layer = document.getElementById('bubble-layer');
+  if (!layer) return;
+
+  // 🔥 Ajusta estos valores a tu gusto
+  const TOTAL = 45;              // ← Más burbujas (antes 22)
+  const TAMANO_MIN = 12;         // ← Más grandes (antes 6)
+  const TAMANO_MAX = 32;         // ← Más grandes (antes 22)
+  const DENSIDAD = 0.7;          // ← 0.5 = más dispersas, 1 = concentradas (más juntas)
+  const DURACION_MIN = 8;        // ← Velocidad (segundos)
+  const DURACION_MAX = 16;       // ← Velocidad (segundos)
+
+  for (let i = 0; i < TOTAL; i++) {
+    const b = document.createElement('div');
+    b.className = 'bub';
+
+    // Tamaño aleatorio entre TAMANO_MIN y TAMANO_MAX
+    const size = TAMANO_MIN + Math.random() * (TAMANO_MAX - TAMANO_MIN);
+
+    // Posición horizontal: concentración en el centro si DENSIDAD < 1
+    // DENSIDAD = 1 → distribución uniforme, 0.5 → más concentradas en el centro
+    const r = Math.random();
+    const left = (r * DENSIDAD + (1 - DENSIDAD) * 0.5) * 100;
+
+    const duration = DURACION_MIN + Math.random() * (DURACION_MAX - DURACION_MIN);
+    const delay = Math.random() * 12;
+
+    b.style.cssText = `
+      width: ${size}px;
+      height: ${size}px;
+      left: ${left}%;
+      animation-duration: ${duration}s;
+      animation-delay: ${delay}s;
+      opacity: ${0.4 + Math.random() * 0.5};
+    `;
     layer.appendChild(b);
   }
 })();

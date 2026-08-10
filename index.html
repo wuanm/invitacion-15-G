@@ -6,6 +6,8 @@
 <link rel="shortcut icon" href="15.png" type="image/x-icon">
 <link rel="stylesheet" href="sobre.css">
 <link rel="stylesheet" href="figura.css">
+<link rel="stylesheet" href="letras.css">
+<link rel="stylesheet" href="canvaPrimera.css">
 <title>XV Años · Bajo el Mar</title>
 <link rel="stylesheet" href="style.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,8 +23,14 @@
 
 
 <body>
+
+  <div class="bubbles-layer" id="bubble-layer"></div>
+ 
+
+
   <div class="image-sobre">
-  
+
+
     <div class="contenedor-imagen">
         <img src="./assets/sobre.png" alt="Imagen de sobre" >
         <button class="entrarInvitacion" id="entrarInvitacion" onclick="entrarInvitacion()"></button>
@@ -67,7 +75,10 @@
     <div class="hero-ornament-sub"></div>
 
     <div class="hero-content">
-      <div class="pre-title">El señor Gilberto Ortiz Jaramillo  con gran orgullo invita a usted a la celebración de </div>
+      <!-- <div class="pre-title">El señor Gilberto Ortiz Jaramillo  con gran orgullo invita a usted a la celebración de </div> -->
+      <div class="hero-titulo">
+        <h1 class="main-title">Mis <span class="highlight">XV</span></h1>
+      </div>
 
       <!-- Photo frame -->
       <div class="frame-wrap">
@@ -297,5 +308,6 @@
 </div>
 
 <script src="app.js"></script>
+
 </body>
 </html>

@@ -1,0 +1,63 @@
+/* ── CONTENEDOR ── */
+.hero-titulo {
+  text-align: center;
+  padding: 20px 0 10px 0;
+  position: relative;
+}
+
+/* ── "MIS XV" GRANDE ── */
+.main-title {
+  font-size: clamp(4rem, 15vw, 8rem);
+  font-weight: 300;
+  font-family: 'Cormorant Garamond', serif;
+  line-height: 1;
+  margin: 0;
+  color: var(--ink, #0E273D);  /* ✅ "Mis" en azul oscuro (legible) */
+  letter-spacing: 2px;
+}
+
+/* ── "XV" DESTACADO CON CONTRASTE ── */
+.main-title .highlight {
+  font-weight: 700;
+  display: inline-block;
+  position: relative;
+  
+  /* ✅ Degradado oscuro → claro (más contraste) */
+  background: linear-gradient(135deg, 
+    #0E273D 0%, 
+    #166690 35%, 
+    #29ABE2 65%, 
+    #5BC0EB 90%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  
+  /* ✅ Sombra oscura para que resalte sobre fondo claro */
+  text-shadow: 
+    0 2px 30px rgba(14,184,200,0.3),
+    0 4px 60px rgba(14,184,200,0.15);
+  
+  animation: brilloAgua 3s ease-in-out infinite;
+}
+
+/* ── ANIMACIÓN DEL BRILLO ── */
+@keyframes brilloAgua {
+  0%, 100% {
+    filter: drop-shadow(0 2px 15px rgba(41,171,226,0.2));
+  }
+  50% {
+    filter: drop-shadow(0 2px 40px rgba(41,171,226,0.5));
+  }
+}
+
+/* ── OPCIONAL: BORDE SUTIL PARA MÁS CONTRASTE ── */
+.main-title .highlight::after {
+  content: '';
+  position: absolute;
+  inset: -4px -8px;
+  background: radial-gradient(ellipse at center, rgba(41,171,226,0.08) 0%, transparent 70%);
+  z-index: -1;
+  border-radius: 20px;
+  filter: blur(10px);
+}

@@ -2,9 +2,13 @@
     width: 100%;
     min-height: 100vh;
     display: flex;
+    flex-direction: column;
+    gap: 10px;
     justify-content: center;
     align-items: center;
     background: transparent;
+    margin-bottom: 20px;
+  
 }
 
 .contenedor-imagen{
@@ -17,13 +21,7 @@
     align-items: center;
     padding: 18px;
     border-radius: 24px;
-    /* background: rgba(255, 255, 255, .35); */
-    /* backdrop-filter: blur(6px); */
-    /* box-shadow:
-        0 30px 80px rgba(20, 70, 100, 0.28),
-        0 10px 30px rgba(20, 70, 100, 0.15),
-        0 0 0 1px rgba(201, 168, 76, .35),
-        0 0 50px rgba(201, 168, 76, .18); */
+
 }
 
 img{
