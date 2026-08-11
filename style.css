@@ -317,7 +317,7 @@ body::before {
 ═══════════════════════════════ */
 .page {
   position: relative;
-  z-index: 1;
+  z-index: -1;
   max-width: 500px;
   margin-left: auto;
   margin-right: auto;
@@ -348,6 +348,7 @@ body::before {
   border-radius: 20px;
   margin-left: 10px;
   margin-right: 10px;
+  z-index: -20;
 
 }
 
@@ -564,6 +565,7 @@ body::before {
   overflow: hidden;
   margin-bottom: 150px;
   box-shadow: 0 8px 32px rgba(41, 171, 226, .16);
+  z-index: -40;
 
 }
 
@@ -576,6 +578,7 @@ body::before {
   right: 0;
   height: 1px;
   background: linear-gradient(90deg, transparent 0%, var(--gold) 30%, var(--gold-glow) 50%, var(--gold) 70%, transparent 100%);
+  
 
 }
 
@@ -589,6 +592,7 @@ body::before {
   height: 120px;
   border-radius: 50%;
   background: radial-gradient(circle, rgba(41, 171, 226, .1) 0%, transparent 70%);
+   z-index: -40;
   pointer-events: none;
 }
 
@@ -1167,7 +1171,7 @@ select.f-input {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  z-index: 0;
+  z-index: 100;
   overflow: hidden;
 }
 
