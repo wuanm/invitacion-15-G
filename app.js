@@ -156,7 +156,7 @@
 
 /* ── SEA PARTICLES (fish/shells) ── */
 (()=>{
-  const symbols=['🐠','🐟','🐡','🦑','🐬','🐋','🐙'];
+   const symbols=['🐠','🐟','🐡','🐠','🐬','🐋','🐠'];
   for(let i=0;i<7;i++){
     const el=document.createElement('div');
     el.className='sea-particle';
