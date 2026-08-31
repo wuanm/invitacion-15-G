@@ -210,21 +210,13 @@ function tick(){
 }
 setInterval(tick,1000); tick();
 
-/* ── PHOTO UPLOAD ── */
-// document.getElementById('photo-input').addEventListener('change',function(e){
-//   const f=e.target.files[0]; if(!f) return;
-//   const r=new FileReader();
-//   r.onload=ev=>{
-//     document.getElementById('photo-frame').innerHTML=`<img src="${ev.target.result}" alt="Festejada">`;
-//   };
-//   r.readAsDataURL(f);
-// });
+
 
 
 
 // Envio de datos a hoja de calculo de google docs
 
-// 🔥 URL de tu Web App
+//  URL de tu Web App
 const GS_URL = 'https://script.google.com/macros/s/AKfycbwjlqYu35ygtsCZPtmjvMmAQrEVZSYq5bZn7FvKN09MPZYVZeKfz4u5dL7ct0nOSejF/exec';
 
 const confirmo = localStorage.getItem('rsvp_confirmado');
