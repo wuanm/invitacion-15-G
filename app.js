@@ -1,4 +1,5 @@
 
+let isSubmitting = false;
 
 /* ── CANVAS OCEAN ── */
 (()=>{
@@ -227,55 +228,88 @@ if(confirmo){
 }
 
 
+ // ← Al inicio del script
 
 async function enviarRSVP(asiste) {
-   
-    // 📌 Obtener nombre
+    // 🔒 1. Bloquear si ya está en proceso
+    if (isSubmitting) {
+        toast('⏳ Ya estamos procesando...');
+        return;
+    }
+
+    // 🔒 2. Bloquear si ya confirmó (localStorage)
+    if (localStorage.getItem('rsvp_confirmado')) {
+        toast('✅ Ya confirmaste tu asistencia.');
+        document.getElementById('form-feedback').style.display = 'block';
+        document.getElementById('form-feedback').innerHTML = '🌊 Ya confirmaste. ¡Te esperamos! 🐚';
+        return;
+    }
+
+    // 📌 3. Validar nombre (sigue siendo necesario)
     const nombre = document.getElementById('f-name').value.trim();
     if (!nombre) {
         toast('⚠️ Por favor ingrese su nombre');
         return;
     }
 
-    // 📌 Preparar datos
+    // 📌 4. Obtener invitados (YA validado por tu otro script, solo tomamos el valor)
+    const guestsInput = document.getElementById('f-guests');
+    const invitados = parseInt(guestsInput.value) || 1; // Tu validación ya lo dejó en 1-4
+
+    // 🔒 5. Bloquear botón inmediatamente
+    const btn = document.querySelector('.btn-primary');
+    const textoOriginal = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = '⏳ Enviando...';
+    isSubmitting = true;
+
+    // 📌 6. Preparar payload
     const payload = {
         timestamp: new Date().toISOString(),
         nombre: nombre,
         asistencia: asiste ? 'Sí' : 'No',
-        invitados: document.getElementById('f-guests').value || '1',
-        telefono: document.getElementById('f-phone').value || '',
-        menu: document.getElementById('f-menu')?.value || ''
+        invitados: invitados,
+        telefono: document.getElementById('f-phone').value.trim() || ''
     };
 
-    // 📌 Enviar datos
     try {
-        const response = await fetch(GS_URL, {
+        // 📤 7. Enviar a Google Sheets
+        await fetch(GS_URL, {
             method: 'POST',
             mode: 'no-cors',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
         });
 
-         localStorage.setItem('rsvp_confirmado','true');
-          bloquearBotonEnviar();
-       
-        // 📌 Limpiar formulario
+        // ✅ 8. Éxito: guardar en localStorage y bloquear definitivamente
+        localStorage.setItem('rsvp_confirmado', 'true');
+         btn.textContent = '✅ ¡Confirmado!';
+
+        // Limpiar formulario
         document.getElementById('f-name').value = '';
-        document.getElementById('f-guests').value = '1';
+        guestsInput.value = '1';
         document.getElementById('f-phone').value = '';
 
-        // 📌 Mostrar mensaje de confirmación
+        // Mostrar feedback
         const fb = document.getElementById('form-feedback');
         fb.style.display = 'block';
         fb.innerHTML = asiste
-            ? '🌊 ¡Gracias por confirmar su asistencia!'
-            : '💙 Agradecemos su respuesta.';
+            ? '🌊 ¡Gracias por confirmar su asistencia!<br>Con gran alegría le esperamos en esta noche especial. 🐚'
+            : '💙 Agradecemos su respuesta.<br>Lamentamos que no pueda acompañarnos, pero le llevamos en nuestros pensamientos.';
+
+        toast(asiste ? '✅ Asistencia confirmada' : 'Respuesta registrada');
+
+        // El botón queda deshabilitado (no se reactiva)
 
     } catch (error) {
-        console.error('❌ Error:', error);
+        // ❌ 9. Error: reactivar botón para reintentar
+        console.error('❌ Error al enviar:', error);
         toast('❌ Error de conexión. Intente nuevamente.');
+
+        // 🔓 Reactivar botón
+        btn.disabled = false;
+        btn.textContent = textoOriginal;
+        isSubmitting = false; // Liberar bloqueo
     }
 }
 
